@@ -1,7 +1,7 @@
 ﻿$ErrorActionPreference = 'Stop'
 
 $projectDir = Split-Path -Parent $PSScriptRoot
-$testRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("ai-dev-kit-test-{0}" -f [guid]::NewGuid().ToString('N'))
+$testRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("codex-init-test-{0}" -f [guid]::NewGuid().ToString('N'))
 $codexDir = Join-Path $testRoot '.codex'
 $stubDir = Join-Path $testRoot 'bin'
 $originalCodexHome = $env:CODEX_HOME
@@ -38,7 +38,7 @@ try {
         [regex]::Matches($secondSync, '(?m)^<!-- AI_DEV_KIT_START -->\r?$').Count -ne 1 -or
         -not $secondSync.Contains('# 用户已有规则') -or
         -not $secondSync.Contains('保留 zvec-grep 托管内容') -or
-        -not $secondSync.Contains('# AI Dev Kit 全局开发规则') -or
+        -not $secondSync.Contains('# codex-init 全局开发规则') -or
         -not (Test-Path -LiteralPath "$agentsPath.ai-dev-kit.bak")) {
         throw '全局 AGENTS.md 同步未通过幂等与保留检查。'
     }

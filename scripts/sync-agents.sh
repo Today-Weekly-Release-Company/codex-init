@@ -24,7 +24,7 @@ if [ -f "$TARGET_FILE" ]; then
   end_count=$(grep -Fxc "$END_MARKER" "$TARGET_FILE" || true)
 
   if [ "$start_count" -gt 1 ] || [ "$end_count" -gt 1 ] || [ "$start_count" -ne "$end_count" ]; then
-    printf '错误：%s 中的 AI Dev Kit 托管标记不完整\n' "$TARGET_FILE" >&2
+    printf '错误：%s 中的 codex-init 托管标记不完整\n' "$TARGET_FILE" >&2
     exit 1
   fi
 
@@ -34,7 +34,7 @@ if [ -f "$TARGET_FILE" ]; then
       $0 == end { end_line = NR }
       END { exit !(start_line > 0 && start_line < end_line) }
     ' "$TARGET_FILE"; then
-      printf '错误：%s 中的 AI Dev Kit 托管标记顺序错误\n' "$TARGET_FILE" >&2
+      printf '错误：%s 中的 codex-init 托管标记顺序错误\n' "$TARGET_FILE" >&2
       exit 1
     fi
 

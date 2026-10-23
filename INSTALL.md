@@ -1,4 +1,4 @@
-# AI Dev Kit 安装执行手册
+# codex-init 安装执行手册
 
 本文档供 Codex 或其他具备终端能力的 AI Agent 执行。目标是根据用户当前环境完成安装，同时保留已有配置。
 
@@ -28,8 +28,8 @@
 当前工作区已经是本仓库时，直接进入仓库根目录。其他情况下，先创建临时目录，再将仓库克隆到该目录：
 
 ```bash
-git clone --depth 1 https://github.com/Today-Weekly-Release-Company/ai-dev-kit.git
-cd ai-dev-kit
+git clone --depth 1 https://github.com/Today-Weekly-Release-Company/codex-init.git
+cd codex-init
 ```
 
 安装结束后清理本次创建的临时克隆目录。用户主动选择的长期目录予以保留。
@@ -86,7 +86,7 @@ Windows 原生 PowerShell：
 .\scripts\sync-agents.ps1
 ```
 
-脚本只维护以下标记之间的内容：
+为兼容已有安装，脚本沿用以下托管标记：
 
 ```text
 <!-- AI_DEV_KIT_START -->

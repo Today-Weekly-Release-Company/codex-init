@@ -50,7 +50,7 @@ if [ -f "$AGENTS_FILE" ] \
   && grep -Fq '<!-- AI_DEV_KIT_END -->' "$AGENTS_FILE"; then
   pass "全局 AGENTS.md 已同步"
 else
-  fail "全局 AGENTS.md 缺少 AI Dev Kit 托管区块"
+  fail "全局 AGENTS.md 缺少 codex-init 托管区块"
 fi
 
 if [ -s "$CODEX_CONFIG_DIR/AGENTS.override.md" ]; then

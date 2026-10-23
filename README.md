@@ -1,4 +1,4 @@
-# Today Weekly Release Company AI Dev Kit
+# codex-init
 
 通过一段文本指令，让 Codex 根据当前电脑环境安装团队开发工具。
 
@@ -8,7 +8,7 @@
 
 ```text
 请安装并配置这个开发套件：
-https://github.com/Today-Weekly-Release-Company/ai-dev-kit
+https://github.com/Today-Weekly-Release-Company/codex-init
 
 请完整阅读仓库根目录的 INSTALL.md，再根据当前电脑环境完成安装。
 
@@ -27,16 +27,16 @@ Codex 会按照 [INSTALL.md](INSTALL.md) 检查环境并执行安装，适合首
 macOS、Linux、WSL 可在满足 Node.js 22 和 npm 的环境中运行：
 
 ```bash
-git clone https://github.com/Today-Weekly-Release-Company/ai-dev-kit.git
-cd ai-dev-kit
+git clone https://github.com/Today-Weekly-Release-Company/codex-init.git
+cd codex-init
 ./install.sh
 ```
 
 Windows 原生 PowerShell 使用对应入口：
 
 ```powershell
-git clone https://github.com/Today-Weekly-Release-Company/ai-dev-kit.git
-Set-Location ai-dev-kit
+git clone https://github.com/Today-Weekly-Release-Company/codex-init.git
+Set-Location codex-init
 .\install.ps1
 ```
 
@@ -71,6 +71,7 @@ PowerShell 脚本受系统执行策略管理；遇到限制时按 [INSTALL.md](I
 │   └── scripts_test.ps1
 └── .agents/
     └── skills/
+        └── playwright-cli/
 ```
 
-仓库级共享技能位于 `.agents/skills/`，在 Codex 中打开本仓库后即可使用。
+仓库级共享技能仅保留 `.agents/skills/playwright-cli/`，在 Codex 中打开本仓库后即可使用。

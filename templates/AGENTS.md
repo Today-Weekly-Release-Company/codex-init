@@ -1,4 +1,4 @@
-# AI Dev Kit 全局开发规则
+# codex-init 全局开发规则
 
 ## 沟通与规划
 

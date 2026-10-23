@@ -3,7 +3,7 @@
 set -eu
 
 PROJECT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-TEST_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/ai-dev-kit-test.XXXXXX")
+TEST_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/codex-init-test.XXXXXX")
 TEST_HOME="$TEST_ROOT/home"
 STUB_BIN="$TEST_ROOT/bin"
 
@@ -34,7 +34,7 @@ AGENTS_FILE="$TEST_HOME/.codex/AGENTS.md"
 [ "$(grep -Fc '<!-- AI_DEV_KIT_START -->' "$AGENTS_FILE")" -eq 1 ]
 grep -Fq '# 用户已有规则' "$AGENTS_FILE"
 grep -Fq '保留 zvec-grep 托管内容' "$AGENTS_FILE"
-grep -Fq '# AI Dev Kit 全局开发规则' "$AGENTS_FILE"
+grep -Fq '# codex-init 全局开发规则' "$AGENTS_FILE"
 [ -f "$AGENTS_FILE.ai-dev-kit.bak" ]
 
 cat > "$STUB_BIN/node" <<'EOF'
