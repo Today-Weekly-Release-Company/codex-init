@@ -17,12 +17,7 @@ case "$(uname -s)" in
   *) fail "此脚本适用于 macOS、Linux 或 WSL；Windows 原生环境请运行 install.ps1" ;;
 esac
 
-for command_name in curl node npm; do
-  command -v "$command_name" >/dev/null 2>&1 || fail "缺少命令：$command_name"
-done
-
-node_major=$(node --version | sed -E 's/^v([0-9]+).*/\1/')
-[ "$node_major" -ge 22 ] 2>/dev/null || fail "zvec-grep 需要 Node.js 22 或更高版本"
+command -v curl >/dev/null 2>&1 || fail "缺少命令：curl"
 
 printf '\n==> 安装并配置 RTK\n'
 if command -v rtk >/dev/null 2>&1; then
@@ -32,11 +27,6 @@ else
   command -v rtk >/dev/null 2>&1 || fail "RTK 安装后仍无法从 PATH 找到"
 fi
 rtk init --global --codex
-
-printf '\n==> 安装 zvec-grep 并注册 Codex MCP\n'
-npm install --global @zvec/zvec-grep@latest
-command -v zg >/dev/null 2>&1 || fail "zvec-grep 安装后仍无法从 PATH 找到"
-zg install --target codex --yes
 
 printf '\n==> 同步全局 AGENTS.md\n'
 "$PROJECT_DIR/scripts/sync-agents.sh"

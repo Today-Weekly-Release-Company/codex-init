@@ -23,9 +23,9 @@ try {
 旧内容
 <!-- AI_DEV_KIT_END -->
 
-<!-- ZVEC_GREP_START -->
-保留 zvec-grep 托管内容
-<!-- ZVEC_GREP_END -->
+<!-- OTHER_TOOL_START -->
+保留其他工具托管内容
+<!-- OTHER_TOOL_END -->
 '@
     [System.IO.File]::WriteAllText($agentsPath, ($originalAgents -replace "`r?`n", "`r`n"), $utf8)
 
@@ -37,30 +37,19 @@ try {
         [regex]::IsMatch($secondSync, '(?<!\r)\n') -or
         [regex]::Matches($secondSync, '(?m)^<!-- AI_DEV_KIT_START -->\r?$').Count -ne 1 -or
         -not $secondSync.Contains('# 用户已有规则') -or
-        -not $secondSync.Contains('保留 zvec-grep 托管内容') -or
+        -not $secondSync.Contains('保留其他工具托管内容') -or
         -not $secondSync.Contains('# codex-init 全局开发规则') -or
         -not (Test-Path -LiteralPath "$agentsPath.ai-dev-kit.bak")) {
         throw '全局 AGENTS.md 同步未通过幂等与保留检查。'
     }
 
     if ($isNativeWindows) {
-        [System.IO.File]::WriteAllText((Join-Path $stubDir 'node.cmd'), "@echo off`r`necho v22.20.0`r`n", $utf8)
-        [System.IO.File]::WriteAllText((Join-Path $stubDir 'npm.cmd'), "@echo off`r`nexit /b 0`r`n", $utf8)
-        [System.IO.File]::WriteAllText((Join-Path $stubDir 'rtk.cmd'), "@echo off`r`nif `"%1`"==`"--version`" echo rtk 0.49.0`r`nexit /b 0`r`n", $utf8)
-        [System.IO.File]::WriteAllText((Join-Path $stubDir 'zg.cmd'), "@echo off`r`nif `"%1`"==`"--version`" echo 0.2.2`r`nexit /b 0`r`n", $utf8)
+        [System.IO.File]::WriteAllText((Join-Path $stubDir 'rtk.cmd'), "@echo off`r`nexit /b 0`r`n", $utf8)
     } else {
-        foreach ($name in @('node', 'rtk', 'zg')) {
-            $body = switch ($name) {
-                'node' { 'echo v22.20.0' }
-                'rtk' { 'if [ "$1" = "--version" ]; then echo rtk 0.49.0; fi' }
-                'zg' { 'if [ "$1" = "--version" ]; then echo 0.2.2; fi' }
-            }
-            $path = Join-Path $stubDir $name
-            [System.IO.File]::WriteAllText($path, "#!/bin/sh`n$body`nexit 0`n", $utf8)
-            & chmod +x $path
-        }
+        $path = Join-Path $stubDir 'rtk'
+        [System.IO.File]::WriteAllText($path, "#!/bin/sh`nexit 0`n", $utf8)
+        & chmod +x $path
     }
-    [System.IO.File]::WriteAllText((Join-Path $codexDir 'config.toml'), "[mcp_servers.zvec_grep]`ncommand = 'zg'`n", $utf8)
 
     & (Join-Path $projectDir 'scripts/verify.ps1')
     if ($isNativeWindows) {
@@ -76,12 +65,6 @@ try {
     if (-not $rejected) { throw 'sync-agents.ps1 应拒绝顺序错误的标记。' }
 
     $env:CODEX_HOME = $codexDir
-    Remove-Item -LiteralPath (Join-Path $codexDir 'config.toml')
-    $rejected = $false
-    try { & (Join-Path $projectDir 'scripts/verify.ps1') | Out-Null } catch { $rejected = $true }
-    if (-not $rejected) { throw 'verify.ps1 应在 MCP 配置缺失时失败。' }
-
-    [System.IO.File]::WriteAllText((Join-Path $codexDir 'config.toml'), "[mcp_servers.zvec_grep]`n", $utf8)
     [System.IO.File]::WriteAllText((Join-Path $codexDir 'AGENTS.override.md'), '覆盖规则', $utf8)
     $rejected = $false
     try { & (Join-Path $projectDir 'scripts/verify.ps1') | Out-Null } catch { $rejected = $true }
