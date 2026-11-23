@@ -52,6 +52,18 @@ PowerShell 脚本受系统执行策略管理；遇到限制时按 [INSTALL.md](I
 - 安装并配置 Rust Token Killer（RTK）；
 - 验证命令与全局配置状态。
 
+## 可选：在 Paimon 项目中接入 Code Inspector
+
+Code Inspector 可以从开发页面上的元素直接跳到编辑器中的对应源码。使用 Webpack 的 Paimon 项目可按 [Code Inspector 接入步骤](INSTALL.md#6-可选接入-code-inspector) 安装项目依赖并配置 `paimon.config.js`。插件默认仅在开发环境生效。 [官方文档](https://inspector.fe-dev.cn/guide/start.html) · [GitHub 源码仓库](https://github.com/zh-lx/code-inspector)
+
+启动开发服务后，macOS 按住 `Option + Shift`，Windows 按住 `Alt + Shift`。移动鼠标选中元素，看到遮罩后点击左键，编辑器会打开对应文件并定位到源码行。
+
+![Code Inspector 官方演示：从网页元素跳转到编辑器中的源码](https://cdn.jsdelivr.net/gh/zh-lx/static-img/code-inspector/demo.gif)
+
+浏览器控制台也会显示组合键提示。 [官方快速开始](https://inspector.fe-dev.cn/guide/start.html#使用)
+
+![Code Inspector 官方截图：浏览器控制台中的组合键提示](https://cdn.jsdelivr.net/gh/zh-lx/static-img/code-inspector/console-success.png)
+
 ## 仓库结构
 
 ```text

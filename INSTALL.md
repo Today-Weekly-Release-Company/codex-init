@@ -136,12 +136,49 @@ Windows 原生 PowerShell：
 
 所有项目均显示 `PASS` 后，提醒用户重启 Codex 或新建会话。
 
-## 6. 结果报告
+## 6. 可选接入 Code Inspector
+
+用户提供使用 Webpack 的 Paimon 项目时，在该项目根目录接入 `code-inspector-plugin`。当前没有目标项目时，跳过这一步。 [官方文档](https://inspector.fe-dev.cn/guide/start.html) · [GitHub 源码仓库](https://github.com/zh-lx/code-inspector)
+
+1. 检查 `package.json` 和 `paimon.config.js`，复用已有依赖和插件配置。使用 npm 的项目按当前平台执行以下命令。使用其他包管理器的项目沿用现有工具和锁文件。
+
+   macOS、Linux、WSL：
+
+   ```bash
+   npm install -D code-inspector-plugin
+   ```
+
+   Windows 原生 PowerShell：
+
+   ```powershell
+   npm.cmd install -D code-inspector-plugin
+   ```
+
+2. 在 `paimon.config.js` 顶部引入插件。
+
+   ```js
+   const { codeInspectorPlugin } = require('code-inspector-plugin');
+   ```
+
+   将下面的配置合并到现有 `builder()` 的返回对象。已有 `webpack.plugins` 时，将插件追加到该数组并保留原有插件和其他 Webpack 配置。
+
+   ```js
+   webpack: {
+     plugins: [codeInspectorPlugin({ bundler: 'webpack' })],
+   },
+   ```
+
+3. 运行 `npm start`（Windows 原生 PowerShell 可运行 `npm.cmd start`）。打开开发页面，macOS 按住 `Option + Shift`，Windows 按住 `Alt + Shift`，移动鼠标直到目标元素出现遮罩，再点击左键验证编辑器能定位到源码。若组合键与系统快捷键冲突，可给插件加上 `showSwitch: true`，通过页面上的开关启用定位模式。编辑器识别失败时，按官方 IDE 指南在项目的 `.env.local` 中指定 `CODE_EDITOR`。 [插件配置](https://inspector.fe-dev.cn/api/basic.html) · [IDE 配置](https://inspector.fe-dev.cn/guide/ide.html)
+
+插件默认识别 Webpack 的构建环境，仅在开发环境生效。使用自定义构建模式时，按项目的开发环境条件设置 `dev`。 [开发环境配置](https://inspector.fe-dev.cn/api/basic.html#dev)
+
+## 7. 结果报告
 
 向用户报告：
 
 - RTK 的实际版本；
 - 全局 `AGENTS.md` 的写入位置和备份位置；
+- Code Inspector 的接入项目和点击定位验证结果（执行了可选步骤时）；
 - 发生过的冲突、用户确认和保留事项；
 - 需要用户执行的最后动作，例如重启 Codex。
 
