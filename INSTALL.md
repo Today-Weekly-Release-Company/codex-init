@@ -1,6 +1,6 @@
 # codex-init 安装执行手册
 
-本文档供 Codex 或其他具备终端能力的 AI Agent 执行。目标是根据用户当前环境完成安装，同时保留已有配置。
+本文档供 Codex 或其他具备终端能力的 AI Agent 执行。根据用户当前环境安装或增量更新套件，并保留已有配置。
 
 支持 macOS、Linux、Windows 原生 PowerShell 和 WSL。先判断 Codex 的实际运行环境：Windows 原生使用 `.ps1`；WSL 使用 `.sh`。两者默认的 Codex 主目录分别是 `%USERPROFILE%\.codex` 和 WSL 用户目录下的 `~/.codex`，应配置与目标 Codex 会话相同的环境。
 
@@ -15,21 +15,35 @@
 ## 执行原则
 
 - 先检查，再安装；已经可用的工具直接复用。
-- 使用工具官方安装命令和官方配置入口。
+- 使用工具官方安装命令和配置入口，优先沿用当前环境的版本管理器。
 - 全局文件只修改明确声明的托管区块。
 - 涉及覆盖冲突、移除同名工具、修改 Shell 启动文件或授权时，先向用户说明具体影响并取得确认。
 - 每一步完成后立即验证，失败时保留错误信息并停止相关后续步骤。
 
+## 更新已有安装
+
+先获取本仓库最新版本，再根据新版手册检查本地状态。复用已可用的 Codex、RTK 和现有配置，只补齐适用于当前环境的新组件，或同步有变化的托管配置。Codex 和 RTK 本身的版本升级单独处理。
+
+已有克隆位于干净的 `main`、没有独立的本地提交，且 `origin` 指向本仓库时，在仓库根目录执行以下命令，适用于 macOS 和 Windows。
+
+```bash
+git pull --ff-only origin main
+```
+
+其他情况或无法快进时，按 [准备仓库](#1-准备仓库) 使用新的临时克隆。更新后重新阅读 `INSTALL.md`，执行本次需要的步骤。
+
+如果只更新全局规则，运行对应平台的 [规则同步](#3-同步全局-agentsmd) 和 [验证](#5-验证) 脚本。同步脚本只应用本仓库的托管区块，输出 `UPDATED` 或 `UNCHANGED`。同步有变化时，新建 Codex 会话以加载更新后的规则。 [Codex 规则加载说明](https://developers.openai.com/codex/guides/agents-md)
+
 ## 1. 准备仓库
 
-当前工作区已经是本仓库时，直接进入仓库根目录。其他情况下，先创建临时目录，再将仓库克隆到该目录：
+首次安装时可使用现有的官方克隆。更新已有安装时，按上一节获取最新版本。需要临时克隆时，先创建临时目录，再执行以下命令。
 
 ```bash
 git clone --depth 1 https://github.com/Today-Weekly-Release-Company/codex-init.git
 cd codex-init
 ```
 
-安装结束后清理本次创建的临时克隆目录。用户主动选择的长期目录予以保留。
+安装或更新完成后清理本次创建的临时克隆目录。用户主动选择的长期目录予以保留。
 
 ## 2. 检查当前环境
 
@@ -59,7 +73,7 @@ rtk gain
 
 - Codex 主目录中的 `AGENTS.md`、`AGENTS.override.md` 和 `config.toml`；
 - `CODEX_HOME` 环境变量；
-- 当前 Shell 的 PATH 配置
+- 当前 Shell 的 PATH 配置。发现同一工具有多份安装时，记录当前实际使用的安装路径和版本。
 
 向用户简短说明即将新增或更新的内容，再进入写操作。
 
@@ -108,13 +122,13 @@ winget install --id rtk-ai.rtk --exact
 
 安装后如当前终端尚未识别 `rtk`，重新打开 PowerShell 再继续。WSL 沿用 Linux 安装命令。
 
-确认 `rtk` 所在目录已经进入 PATH，再配置 Codex：
+确认 `rtk` 所在目录已经进入 PATH。可用 `rtk init --global --codex --show` 查看全局集成状态。已有可用的集成直接复用，需要新增或修复集成时运行以下命令。
 
 ```bash
 rtk init --global --codex
-rtk --version
-rtk gain
 ```
+
+运行 `rtk --version` 和 `rtk gain`，确认当前工具可用并记录版本。
 
 PATH 缺失时，根据当前 Shell 配置方式选择修复方法，展示变更并取得用户确认。Windows 优先由 winget 管理 PATH。
 
@@ -177,7 +191,8 @@ Windows 原生 PowerShell：
 向用户报告：
 
 - RTK 的实际版本；
-- 全局 `AGENTS.md` 的写入位置和备份位置；
+- 已复用、新增或更新的组件和配置，以及实际验证结果；
+- 全局 `AGENTS.md` 的位置和备份位置（有备份时）；
 - Code Inspector 的接入项目和点击定位验证结果（执行了可选步骤时）；
 - 发生过的冲突、用户确认和保留事项；
 - 需要用户执行的最后动作，例如重启 Codex。

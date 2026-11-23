@@ -1,28 +1,17 @@
 # codex-init
 
-本项目定位为 Codex 首次安装时的初始化工具集，围绕全局技能、全局公用工具和 `AGENTS.md` 全局规则等基础配置，为后续项目开发准备统一的工作环境。
+codex-init 用于初始化和更新 Codex 开发环境，统一配置团队开发工具与全局 `AGENTS.md` 规则。
 
-通过一段文本指令，让 Codex 根据当前电脑环境安装团队开发工具。
+## 安装或更新
 
-## 推荐安装方式
-
-把下面整段内容发送给 Codex：
+把这段话发给 Codex。
 
 ```text
-请安装并配置这个开发套件：
+请按这个仓库的 INSTALL.md 安装或增量更新 codex-init。
 https://github.com/Today-Weekly-Release-Company/codex-init
-
-请完整阅读仓库根目录的 INSTALL.md，再根据当前电脑环境完成安装。
-
-执行要求：
-1. 先检查现有的 RTK 和 Codex 配置，复用已经可用的安装。
-2. 保留用户已有配置，只更新仓库明确声明的托管区块。
-3. 涉及覆盖冲突配置、移除同名工具、修改 Shell 启动文件或账号授权时，先说明影响并征求确认。
-4. 优先使用各工具的官方安装命令，根据当前操作系统和版本管理器选择最短路径。
-5. 区分 Windows 原生 PowerShell 与 WSL/macOS/Linux，运行对应的 scripts/verify.ps1 或 scripts/verify.sh；报告验证结果并清理临时目录。
 ```
 
-Codex 会按照 [INSTALL.md](INSTALL.md) 检查环境并执行安装，适合首次使用和已有配置复杂的电脑。
+已有安装可直接复用。详见 [增量更新步骤](INSTALL.md#更新已有安装)。
 
 ## 可选：无人值守安装
 
